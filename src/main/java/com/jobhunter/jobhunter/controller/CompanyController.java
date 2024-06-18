@@ -8,9 +8,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +23,11 @@ public class CompanyController {
 
         CompanyDTOResponse companyDTOResponse = companyService.saveCompany(companyDTOCreate);
         return ResponseEntity.status(HttpStatus.CREATED).body(companyDTOResponse);
+    }
+
+    @GetMapping("/companies")
+    public ResponseEntity<List<CompanyDTOResponse>> getAllCompany(){
+        List<CompanyDTOResponse> listDtoResponses = companyService.getAllCompany();
+        return ResponseEntity.ok().body(listDtoResponses);
     }
 }
