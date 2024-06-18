@@ -44,4 +44,10 @@ public class Company {
         this.createBy = SecurityUtils.getCurrentUserLogin().isPresent() ? SecurityUtils.getCurrentUserLogin().get() : "";
         this.createAt = Instant.now();
     }
+
+    @PreUpdate
+    public void handlerAfterUpdate(){
+        this.updateBy = SecurityUtils.getCurrentUserLogin().isPresent() ? SecurityUtils.getCurrentUserLogin().get() : "";
+        this.updateAt = Instant.now();
+    }
 }

@@ -2,6 +2,7 @@ package com.jobhunter.jobhunter.controller;
 
 
 import com.jobhunter.jobhunter.dto.request.CompanyDTOCreate;
+import com.jobhunter.jobhunter.dto.request.CompanyDTOUpdate;
 import com.jobhunter.jobhunter.dto.response.CompanyDTOResponse;
 import com.jobhunter.jobhunter.service.CompanyService;
 import jakarta.validation.Valid;
@@ -34,5 +35,11 @@ public class CompanyController {
     @GetMapping("companies/{id}")
     public ResponseEntity<CompanyDTOResponse> getCompanyById(@PathVariable Long id){
         return ResponseEntity.ok().body(companyService.getById(id));
+    }
+
+    @PutMapping("/companies/{id}")
+    public ResponseEntity<CompanyDTOResponse> updateCompany(@PathVariable Long id, @Valid @RequestBody CompanyDTOUpdate companyDTOUpdate) {
+        CompanyDTOResponse companyDTOResponse = companyService.updateCompany(id, companyDTOUpdate);
+        return ResponseEntity.ok().body(companyDTOResponse);
     }
 }

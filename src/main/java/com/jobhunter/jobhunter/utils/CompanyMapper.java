@@ -32,6 +32,19 @@ public class CompanyMapper {
                 .build();
     }
 
+    public static CompanyDTOResponse companyDTOResponseUpdate(Company company){
+        return CompanyDTOResponse.builder()
+                .name(company.getName())
+                .address(company.getAddress())
+                .description(company.getDescription())
+                .logo(company.getLogo())
+                .createBy(company.getUpdateBy())
+                .createAt(company.getUpdateAt())
+                .success(true)
+                .build();
+    }
+
+
     public static List<CompanyDTOResponse> companyDTOResponseList(List<Company> companyList){
         return companyList.stream().map(t -> CompanyDTOResponse.builder()
                         .name(t.getName())
