@@ -30,4 +30,9 @@ public class CompanyController {
         List<CompanyDTOResponse> listDtoResponses = companyService.getAllCompany();
         return ResponseEntity.ok().body(listDtoResponses);
     }
+
+    @GetMapping("companies/{id}")
+    public ResponseEntity<CompanyDTOResponse> getCompanyById(@PathVariable Long id){
+        return ResponseEntity.ok().body(companyService.getById(id));
+    }
 }

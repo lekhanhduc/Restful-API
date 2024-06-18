@@ -2,6 +2,7 @@ package com.jobhunter.jobhunter.exception;
 
 import com.jobhunter.jobhunter.model.CustomError;
 import com.jobhunter.jobhunter.model.NotfoundException;
+import com.jobhunter.jobhunter.model.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -26,6 +27,10 @@ public class GlobalExceptionHandler extends Exception {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Invalid User ID")

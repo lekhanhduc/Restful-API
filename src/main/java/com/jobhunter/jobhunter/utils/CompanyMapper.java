@@ -4,6 +4,8 @@ import com.jobhunter.jobhunter.dto.request.CompanyDTOCreate;
 import com.jobhunter.jobhunter.dto.response.CompanyDTOResponse;
 import com.jobhunter.jobhunter.entity.Company;
 
+import java.util.List;
+
 public class CompanyMapper {
 
     private CompanyMapper(){
@@ -28,5 +30,16 @@ public class CompanyMapper {
                 .createAt(company.getCreateAt())
                 .success(true)
                 .build();
+    }
+
+    public static List<CompanyDTOResponse> companyDTOResponseList(List<Company> companyList){
+        return companyList.stream().map(t -> CompanyDTOResponse.builder()
+                        .name(t.getName())
+                        .address(t.getAddress())
+                        .description(t.getDescription())
+                        .createAt(t.getCreateAt())
+                        .createBy(t.getCreateBy())
+                        .build())
+                        .toList();
     }
 }

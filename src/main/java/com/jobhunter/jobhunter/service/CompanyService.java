@@ -4,12 +4,14 @@ package com.jobhunter.jobhunter.service;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOCreate;
 import com.jobhunter.jobhunter.dto.response.CompanyDTOResponse;
 import com.jobhunter.jobhunter.entity.Company;
+import com.jobhunter.jobhunter.exception.GlobalExceptionHandler;
 import com.jobhunter.jobhunter.repository.CompanyRepository;
 import com.jobhunter.jobhunter.utils.CompanyMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,14 +19,14 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
 
-    public CompanyDTOResponse saveCompany(CompanyDTOCreate companyDTOCreate){
+    public CompanyDTOResponse saveCompany(CompanyDTOCreate companyDTOCreate) {
 
         String name = companyDTOCreate.getName();
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Name Company không được để trống");
         }
         Company cpn = companyRepository.findCompanyByName(name);
-        if(cpn != null){
+        if (cpn != null) {
             throw new IllegalArgumentException("Name Company đã tồn tại");
         }
         Company company = CompanyMapper.toCompany(companyDTOCreate);
@@ -32,16 +34,15 @@ public class CompanyService {
         return CompanyMapper.companyDTOResponse(company);
     }
 
-    public List<CompanyDTOResponse> getAllCompany(){
+    public List<CompanyDTOResponse> getAllCompany() {
         List<Company> listCompany = companyRepository.findAll();
+        return CompanyMapper.companyDTOResponseList(listCompany);
+    }
 
-       return listCompany.stream().map(t -> CompanyDTOResponse.builder()
-                .name(t.getName())
-                .address(t.getAddress())
-                .description(t.getDescription())
-                .createAt(t.getCreateAt())
-                .createBy(t.getCreateBy())
-                .build())
-                .toList();
+    public CompanyDTOResponse getById(Long id) {
+
+        return companyRepository.findById(id)
+                .map(CompanyMapper::companyDTOResponse)
+                .orElseThrow(() -> new GlobalExceptionHandler.IdInvalidException("Company not found with id:" + id));
     }
 }
