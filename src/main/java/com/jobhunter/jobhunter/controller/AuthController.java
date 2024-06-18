@@ -10,9 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -35,8 +33,8 @@ public class AuthController {
 
         // Xác thực người dùng => viết hàm loadUserByUsername
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         // tạo token
         String access_token = securityUtils.createToke(authentication);
 
@@ -44,6 +42,10 @@ public class AuthController {
                         .success(true)
                         .token(access_token)
                             .build());
+    }
 
+    @GetMapping("/")
+    public String getHelloWord(){
+        return "Hello Khanh Duc";
     }
 }
