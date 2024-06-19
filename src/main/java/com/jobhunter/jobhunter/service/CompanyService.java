@@ -46,11 +46,11 @@ public class CompanyService {
         ResultPaginationDTO rs = new ResultPaginationDTO();
         Meta mt = new Meta();
 
-        mt.setPage(companyPage.getNumber() + 1);
-        mt.setPageSize(companyPage.getSize());
+        mt.setPage(pageable.getPageNumber() + 1); // từ frontend truyền lên, trang hiện tại
+        mt.setPageSize(pageable.getPageSize());  // từ frontend truyền lên, số lượng phần tử của trang
 
-        mt.setTotalPages(companyPage.getTotalPages());
-        mt.setTotal(companyPage.getTotalElements());
+        mt.setTotalPages(companyPage.getTotalPages()); // truy vấn từ database, để Thiết lập tổng số trang
+        mt.setTotal(companyPage.getTotalElements());  // truy vấn lấy từ database để thiết lập tổng số trang, và tổng số phần tử
 
         rs.setMeta(mt);
         rs.setResult(companyPage.getContent());
