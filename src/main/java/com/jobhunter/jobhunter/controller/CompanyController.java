@@ -1,7 +1,7 @@
 package com.jobhunter.jobhunter.controller;
 
 
-import com.jobhunter.jobhunter.dto.pagination.ResultPaginationDTOCompany;
+import com.jobhunter.jobhunter.dto.pagination.ResultPaginationDTO;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOCreate;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOUpdate;
 import com.jobhunter.jobhunter.dto.response.CompanyDTOResponse;
@@ -32,8 +32,8 @@ public class CompanyController {
     }
 
     @GetMapping("/companies")
-    public ResponseEntity<ResultPaginationDTOCompany> getAllCompany(@RequestParam("current") Optional<String> currentOptional,
-                                                                    @RequestParam("pageSize") Optional<String> pageSizeOptional){
+    public ResponseEntity<ResultPaginationDTO> getAllCompany(@RequestParam("current") Optional<String> currentOptional,
+                                                             @RequestParam("pageSize") Optional<String> pageSizeOptional){
 
         String sCurrent = currentOptional.isPresent() ? currentOptional.get() : "";
         String sPageSize = pageSizeOptional.isPresent() ? pageSizeOptional.get() : "";

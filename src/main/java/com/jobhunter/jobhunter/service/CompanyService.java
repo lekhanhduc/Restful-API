@@ -1,7 +1,7 @@
 package com.jobhunter.jobhunter.service;
 
 import com.jobhunter.jobhunter.dto.pagination.Meta;
-import com.jobhunter.jobhunter.dto.pagination.ResultPaginationDTOCompany;
+import com.jobhunter.jobhunter.dto.pagination.ResultPaginationDTO;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOCreate;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOUpdate;
 import com.jobhunter.jobhunter.dto.response.CompanyDTOResponse;
@@ -37,10 +37,10 @@ public class CompanyService {
         return CompanyMapper.companyDTOResponse(company);
     }
 
-    public ResultPaginationDTOCompany fetchAllCompany(Pageable pageable) {
+    public ResultPaginationDTO fetchAllCompany(Pageable pageable) {
         Page<Company> companyPage = companyRepository.findAll(pageable);
 
-        ResultPaginationDTOCompany rs = new ResultPaginationDTOCompany();
+        ResultPaginationDTO rs = new ResultPaginationDTO();
         Meta mt = new Meta();
 
         mt.setPage(companyPage.getNumber());
