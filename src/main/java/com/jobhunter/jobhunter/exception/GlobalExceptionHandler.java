@@ -113,7 +113,6 @@ public class GlobalExceptionHandler extends Exception {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public static ResponseEntity<EmailAlreadyExistsException> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-
         EmailAlreadyExistsException error = new EmailAlreadyExistsException(HttpStatus.CONFLICT.value(), "Email already exists", HttpStatus.CONFLICT.getReasonPhrase());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
