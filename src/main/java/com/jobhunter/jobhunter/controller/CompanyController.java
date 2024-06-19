@@ -1,6 +1,7 @@
 package com.jobhunter.jobhunter.controller;
 
 
+import com.jobhunter.jobhunter.annotation.ApiMessage;
 import com.jobhunter.jobhunter.dto.pagination.ResultPaginationDTO;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOCreate;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOUpdate;
@@ -35,6 +36,7 @@ public class CompanyController {
     }
 
     @GetMapping("/companies")
+    @ApiMessage("Get All Company")
     public ResponseEntity<ResultPaginationDTO> getAllCompany(//@RequestParam("current") Optional<String> currentOptional,
                                                              //@RequestParam("pageSize") Optional<String> pageSizeOptional){
                                                              @Filter Specification<Company> spec,
