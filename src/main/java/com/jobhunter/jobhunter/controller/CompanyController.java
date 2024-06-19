@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class CompanyController {
 
@@ -51,17 +52,20 @@ public class CompanyController {
     }
 
     @GetMapping("companies/{id}")
+    @ApiMessage("Get Company")
     public ResponseEntity<CompanyDTOResponse> getCompanyById(@PathVariable Long id){
         return ResponseEntity.ok().body(companyService.getById(id));
     }
 
     @PutMapping("/companies/{id}")
+    @ApiMessage("Update Company")
     public ResponseEntity<CompanyDTOUpdateResponse> updateCompany(@PathVariable Long id, @Valid @RequestBody CompanyDTOUpdate companyDTOUpdate) {
         CompanyDTOUpdateResponse companyDTOResponse = companyService.updateCompany(id, companyDTOUpdate);
         return ResponseEntity.ok().body(companyDTOResponse);
     }
 
     @DeleteMapping("/companies/{id}")
+    @ApiMessage("Delete Company")
     public ResponseEntity<DeleteDTOResponse> deleteCompany(@PathVariable Long id){
         return ResponseEntity.ok().body(companyService.deleteCompany(id));
     }

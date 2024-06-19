@@ -14,6 +14,9 @@ public class UserMapper {
                                 .username(userDTOCreate.getName())
                                 .email(userDTOCreate.getEmail())
                                 .password(userDTOCreate.getPassword())
+                                .age(userDTOCreate.getAge())
+                                .address(userDTOCreate.getAddress())
+                                .gender(userDTOCreate.getGender())
                                 .build();
     }
 
@@ -21,6 +24,9 @@ public class UserMapper {
         return UserDTOResponse.builder()
                                          .email(user.getEmail())
                                          .username(user.getUsername())
+                                         .address(user.getAddress())
+                                         .age(user.getAge())
+                                         .gender(user.getGender())
                                          .build();
     }
 }

@@ -13,4 +13,5 @@ public class RestResponse<T> {
     private int statusCode;
     private T data;
     private String message;
+    private String error;
 }

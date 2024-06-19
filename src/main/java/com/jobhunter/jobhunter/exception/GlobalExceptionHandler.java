@@ -1,10 +1,11 @@
 package com.jobhunter.jobhunter.exception;
 
-import com.jobhunter.jobhunter.model.CustomErrorResponse;
-import com.jobhunter.jobhunter.model.NotfoundException;
-import com.jobhunter.jobhunter.model.ResourceNotFoundException;
+import com.jobhunter.jobhunter.model.*;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +21,21 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends Exception {
+
+
+    @ExceptionHandler(value = {
+            UsernameNotFoundException.class,
+            BadCredentialsException.class,
+            IdInvalidException.class
+    })
+    public ResponseEntity<RestResponse<Object>> handlerIdException(Exception ex){
+        RestResponse<Object> res = new RestResponse<>();
+        res.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        res.setMessage(ex.getMessage());
+        res.setMessage("Exception occurs...");
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+    }
 
     @ExceptionHandler(value = NotfoundException.class)
     public static ResponseEntity<CustomErrorResponse> handleNotFoundException(NotfoundException ex) {
@@ -53,6 +70,16 @@ public class GlobalExceptionHandler extends Exception {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(NoResourceFoundException.class)
+    public static ResponseEntity<CustomErrorResponse> handlerNoResourceFoundException(NoResourceFoundException ex){
+        CustomErrorResponse errorResponse =  CustomErrorResponse.builder()
+                .status(HttpStatus.NOT_FOUND.value())
+                .message("404 Not Found. URL may not exists")
+                .timestamp(new Date())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Invalid User ID")
     public static class IdInvalidException extends RuntimeException {
         public IdInvalidException(String message) {
@@ -82,6 +109,13 @@ public class GlobalExceptionHandler extends Exception {
                 .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public static ResponseEntity<EmailAlreadyExistsException> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+
+        EmailAlreadyExistsException error = new EmailAlreadyExistsException(HttpStatus.CONFLICT.value(), "Email already exists", HttpStatus.CONFLICT.getReasonPhrase());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
 

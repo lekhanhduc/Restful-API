@@ -1,6 +1,5 @@
 package com.jobhunter.jobhunter.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jobhunter.jobhunter.utils.SecurityUtils;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
