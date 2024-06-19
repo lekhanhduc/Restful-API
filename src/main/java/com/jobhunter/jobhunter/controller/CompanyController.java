@@ -1,18 +1,22 @@
 package com.jobhunter.jobhunter.controller;
 
 
+import com.jobhunter.jobhunter.dto.pagination.ResultPaginationDTO;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOCreate;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOUpdate;
 import com.jobhunter.jobhunter.dto.response.CompanyDTOResponse;
+import com.jobhunter.jobhunter.dto.response.CompanyDTOUpdateResponse;
 import com.jobhunter.jobhunter.dto.response.DeleteDTOResponse;
 import com.jobhunter.jobhunter.service.CompanyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,9 +32,18 @@ public class CompanyController {
     }
 
     @GetMapping("/companies")
-    public ResponseEntity<List<CompanyDTOResponse>> getAllCompany(){
-        List<CompanyDTOResponse> listDtoResponses = companyService.getAllCompany();
-        return ResponseEntity.ok().body(listDtoResponses);
+    public ResponseEntity<ResultPaginationDTO> getAllCompany(@RequestParam("current") Optional<String> currentOptional,
+                                                             @RequestParam("pageSize") Optional<String> pageSizeOptional){
+
+        String sCurrent = currentOptional.isPresent() ? currentOptional.get() : "";
+        String sPageSize = pageSizeOptional.isPresent() ? pageSizeOptional.get() : "";
+
+        int current = Integer.parseInt(sCurrent);
+        int pageSize = Integer.parseInt(sPageSize);
+
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+
+        return ResponseEntity.status(HttpStatus.OK).body(this.companyService.fetchAllCompany(pageable));
     }
 
     @GetMapping("companies/{id}")
@@ -39,8 +52,8 @@ public class CompanyController {
     }
 
     @PutMapping("/companies/{id}")
-    public ResponseEntity<CompanyDTOResponse> updateCompany(@PathVariable Long id, @Valid @RequestBody CompanyDTOUpdate companyDTOUpdate) {
-        CompanyDTOResponse companyDTOResponse = companyService.updateCompany(id, companyDTOUpdate);
+    public ResponseEntity<CompanyDTOUpdateResponse> updateCompany(@PathVariable Long id, @Valid @RequestBody CompanyDTOUpdate companyDTOUpdate) {
+        CompanyDTOUpdateResponse companyDTOResponse = companyService.updateCompany(id, companyDTOUpdate);
         return ResponseEntity.ok().body(companyDTOResponse);
     }
 

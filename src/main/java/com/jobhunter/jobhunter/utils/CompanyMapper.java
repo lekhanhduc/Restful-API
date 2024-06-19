@@ -2,6 +2,7 @@ package com.jobhunter.jobhunter.utils;
 
 import com.jobhunter.jobhunter.dto.request.CompanyDTOCreate;
 import com.jobhunter.jobhunter.dto.response.CompanyDTOResponse;
+import com.jobhunter.jobhunter.dto.response.CompanyDTOUpdateResponse;
 import com.jobhunter.jobhunter.entity.Company;
 
 import java.util.List;
@@ -32,14 +33,14 @@ public class CompanyMapper {
                 .build();
     }
 
-    public static CompanyDTOResponse companyDTOResponseUpdate(Company company){
-        return CompanyDTOResponse.builder()
+    public static CompanyDTOUpdateResponse companyDTOResponseUpdate(Company company){
+        return CompanyDTOUpdateResponse.builder()
                 .name(company.getName())
                 .address(company.getAddress())
                 .description(company.getDescription())
                 .logo(company.getLogo())
-                .createBy(company.getUpdateBy())
-                .createAt(company.getUpdateAt())
+                .updateBy(company.getUpdateBy())
+                .updateAt(company.getUpdateAt())
                 .success(true)
                 .build();
     }

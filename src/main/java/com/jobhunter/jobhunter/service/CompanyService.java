@@ -1,14 +1,20 @@
 package com.jobhunter.jobhunter.service;
 
+import com.jobhunter.jobhunter.dto.pagination.Meta;
+import com.jobhunter.jobhunter.dto.pagination.ResultPaginationDTO;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOCreate;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOUpdate;
 import com.jobhunter.jobhunter.dto.response.CompanyDTOResponse;
+import com.jobhunter.jobhunter.dto.response.CompanyDTOUpdateResponse;
 import com.jobhunter.jobhunter.dto.response.DeleteDTOResponse;
 import com.jobhunter.jobhunter.entity.Company;
 import com.jobhunter.jobhunter.exception.GlobalExceptionHandler;
+import com.jobhunter.jobhunter.model.ResourceNotFoundException;
 import com.jobhunter.jobhunter.repository.CompanyRepository;
 import com.jobhunter.jobhunter.utils.CompanyMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -34,20 +40,33 @@ public class CompanyService {
         return CompanyMapper.companyDTOResponse(company);
     }
 
-    public List<CompanyDTOResponse> getAllCompany() {
-        List<Company> listCompany = companyRepository.findAll();
-        return CompanyMapper.companyDTOResponseList(listCompany);
+    public ResultPaginationDTO fetchAllCompany(Pageable pageable) {
+        Page<Company> companyPage = companyRepository.findAll(pageable);
+
+        ResultPaginationDTO rs = new ResultPaginationDTO();
+        Meta mt = new Meta();
+
+        mt.setPage(companyPage.getNumber());
+        mt.setPageSize(companyPage.getSize());
+
+        mt.setTotalPages(companyPage.getTotalPages());
+        mt.setTotal(companyPage.getTotalElements());
+
+        rs.setMeta(mt);
+        rs.setResult(companyPage.getContent());
+
+        return rs;
     }
 
     public CompanyDTOResponse getById(Long id) {
         return companyRepository.findById(id)
                 .map(CompanyMapper::companyDTOResponse)
-                .orElseThrow(() -> new GlobalExceptionHandler.IdInvalidException("Company not found with id:" + id));
+                .orElseThrow(() ->  new ResourceNotFoundException("User not found with id " + id));
     }
 
-    public CompanyDTOResponse updateCompany(Long id, CompanyDTOUpdate companyDTOUpdate) {
+    public CompanyDTOUpdateResponse updateCompany(Long id, CompanyDTOUpdate companyDTOUpdate) {
         Company existingCompany = companyRepository.findById(id)
-                .orElseThrow(() -> new GlobalExceptionHandler.IdInvalidException("Company not exists"));
+                .orElseThrow(() ->   new ResourceNotFoundException("User not found with id " + id));
 
         if (companyDTOUpdate.getName() != null) {
             if (!StringUtils.hasText(companyDTOUpdate.getName())) {
@@ -71,7 +90,7 @@ public class CompanyService {
 
     public DeleteDTOResponse deleteCompany(Long id){
         Company company = companyRepository.findById(id).orElseThrow(
-                () -> new GlobalExceptionHandler.IdInvalidException("Company not found with id:" + id));
+                () ->  new ResourceNotFoundException("User not found with id " + id));
 
         companyRepository.deleteById(company.getId());
         return DeleteDTOResponse.builder()
@@ -79,4 +98,5 @@ public class CompanyService {
                 .success(true)
                 .build();
     }
+
 }

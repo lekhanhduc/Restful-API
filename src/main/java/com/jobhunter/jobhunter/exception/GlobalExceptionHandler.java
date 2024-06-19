@@ -7,9 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -19,7 +21,7 @@ import java.util.Map;
 public class GlobalExceptionHandler extends Exception {
 
     @ExceptionHandler(value = NotfoundException.class)
-    public ResponseEntity<CustomErrorResponse> handleNotFoundException(NotfoundException ex) {
+    public static ResponseEntity<CustomErrorResponse> handleNotFoundException(NotfoundException ex) {
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
                 .message(ex.getCustomError().getMessage())
                 .timestamp(new Date())
@@ -30,7 +32,7 @@ public class GlobalExceptionHandler extends Exception {
     }
 
     @ExceptionHandler(value = RuntimeException.class)
-    public ResponseEntity<CustomErrorResponse> handleRuntimeException(RuntimeException ex) {
+    public static ResponseEntity<CustomErrorResponse> handleRuntimeException(RuntimeException ex) {
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
                 .message(ex.getMessage())
                 .timestamp(new Date())
@@ -41,7 +43,7 @@ public class GlobalExceptionHandler extends Exception {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<CustomErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
+    public static ResponseEntity<CustomErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
                 .message(ex.getMessage())
                 .timestamp(new Date())
@@ -59,7 +61,7 @@ public class GlobalExceptionHandler extends Exception {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public static ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
@@ -70,14 +72,47 @@ public class GlobalExceptionHandler extends Exception {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
+
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<CustomErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+    public static ResponseEntity<CustomErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
                 .message(ex.getMessage())
                 .timestamp(new Date())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public static ResponseEntity<CustomErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        String paramName = ex.getName();
+        String expectedType = ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "unknown";
+        String errorMessage = String.format("Invalid input for '%s'. Expected type is '%s'.", paramName, expectedType);
+
+        CustomErrorResponse errorResponse = CustomErrorResponse.builder()
+                .message(errorMessage)
+                .timestamp(new Date())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MissingPathVariableException.class)
+    public static ResponseEntity<CustomErrorResponse> handleMissingPathVariableException(MissingPathVariableException ex) {
+        String paramName = ex.getVariableName();
+        String errorMessage = String.format("The required URI variable '%s' is missing or empty.", paramName);
+
+        CustomErrorResponse errorResponse = CustomErrorResponse.builder()
+                .message(errorMessage)
+                .timestamp(new Date())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .build();
+
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }
