@@ -15,5 +15,4 @@ public class Meta {
     int pageSize;
     int totalPages;
     long total;
-
 }

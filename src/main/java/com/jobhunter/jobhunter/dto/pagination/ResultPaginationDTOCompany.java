@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ResultPaginationDTO {
+public class ResultPaginationDTOCompany {
 
     Meta meta;
     Object result;

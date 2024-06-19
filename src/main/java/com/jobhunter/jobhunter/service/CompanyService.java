@@ -1,14 +1,13 @@
 package com.jobhunter.jobhunter.service;
 
 import com.jobhunter.jobhunter.dto.pagination.Meta;
-import com.jobhunter.jobhunter.dto.pagination.ResultPaginationDTO;
+import com.jobhunter.jobhunter.dto.pagination.ResultPaginationDTOCompany;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOCreate;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOUpdate;
 import com.jobhunter.jobhunter.dto.response.CompanyDTOResponse;
 import com.jobhunter.jobhunter.dto.response.CompanyDTOUpdateResponse;
 import com.jobhunter.jobhunter.dto.response.DeleteDTOResponse;
 import com.jobhunter.jobhunter.entity.Company;
-import com.jobhunter.jobhunter.exception.GlobalExceptionHandler;
 import com.jobhunter.jobhunter.model.ResourceNotFoundException;
 import com.jobhunter.jobhunter.repository.CompanyRepository;
 import com.jobhunter.jobhunter.utils.CompanyMapper;
@@ -17,8 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -40,10 +37,10 @@ public class CompanyService {
         return CompanyMapper.companyDTOResponse(company);
     }
 
-    public ResultPaginationDTO fetchAllCompany(Pageable pageable) {
+    public ResultPaginationDTOCompany fetchAllCompany(Pageable pageable) {
         Page<Company> companyPage = companyRepository.findAll(pageable);
 
-        ResultPaginationDTO rs = new ResultPaginationDTO();
+        ResultPaginationDTOCompany rs = new ResultPaginationDTOCompany();
         Meta mt = new Meta();
 
         mt.setPage(companyPage.getNumber());
