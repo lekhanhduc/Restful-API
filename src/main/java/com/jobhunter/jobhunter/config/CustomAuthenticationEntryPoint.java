@@ -13,12 +13,13 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private static final String INVALID_TOKEN_ERROR_CODE = "Invalid_token";
+    private static final String INVALID_TOKEN_ERROR_CODE = "invalid_token";
     private static final String INVALID_TOKEN_MESSAGE = "Token is invalid or expired";
 
     private final ObjectMapper objectMapper;
@@ -46,10 +47,11 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     }
 
     private CustomErrorResponse createCustomErrorResponse(String message) {
-        return new CustomErrorResponse(
-                HttpServletResponse.SC_UNAUTHORIZED,
-                message,
-                System.currentTimeMillis()
-        );
+        return CustomErrorResponse.builder()
+                .message(message)
+                .timestamp(new Date())
+                .status(HttpServletResponse.SC_UNAUTHORIZED)
+                .error(String.valueOf(HttpServletResponse.SC_UNAUTHORIZED))
+                .build();
     }
 }

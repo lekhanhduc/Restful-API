@@ -4,6 +4,7 @@ package com.jobhunter.jobhunter.controller;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOCreate;
 import com.jobhunter.jobhunter.dto.request.CompanyDTOUpdate;
 import com.jobhunter.jobhunter.dto.response.CompanyDTOResponse;
+import com.jobhunter.jobhunter.dto.response.DeleteDTOResponse;
 import com.jobhunter.jobhunter.service.CompanyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +42,10 @@ public class CompanyController {
     public ResponseEntity<CompanyDTOResponse> updateCompany(@PathVariable Long id, @Valid @RequestBody CompanyDTOUpdate companyDTOUpdate) {
         CompanyDTOResponse companyDTOResponse = companyService.updateCompany(id, companyDTOUpdate);
         return ResponseEntity.ok().body(companyDTOResponse);
+    }
+
+    @DeleteMapping("/companies/{id}")
+    public ResponseEntity<DeleteDTOResponse> deleteCompany(@PathVariable Long id){
+        return ResponseEntity.ok().body(companyService.deleteCompany(id));
     }
 }

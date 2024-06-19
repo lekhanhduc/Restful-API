@@ -24,5 +24,4 @@ public class CompanyDTOResponse {
     String createBy;
     boolean success;
 
-
 }

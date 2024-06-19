@@ -1,8 +1,7 @@
-package com.jobhunter.jobhunter.model;
+package com.jobhunter.jobhunter.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -10,9 +9,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomErrorResponse {
+
+public class DeleteDTOResponse {
     String message;
-    Date timestamp;
-    int status;
-    String error;
+    boolean success;
 }
