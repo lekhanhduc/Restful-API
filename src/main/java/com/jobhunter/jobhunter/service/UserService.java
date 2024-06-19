@@ -88,5 +88,17 @@ public class UserService {
                     .build();
         }
         throw new GlobalExceptionHandler.IdInvalidException("Username or Password in correct");
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public void updateUserToken(String token, String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            user.setRefreshToken(token);
+            userRepository.save(user);
         }
     }
+}

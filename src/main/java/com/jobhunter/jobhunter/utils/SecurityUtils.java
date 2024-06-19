@@ -1,6 +1,7 @@
 package com.jobhunter.jobhunter.utils;
 
 
+import com.jobhunter.jobhunter.dto.request.LoginDTOResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -24,11 +25,14 @@ public class SecurityUtils {
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS512;
 
     @Value("${jwt.token-validity-in-seconds}")
-    private long EXPIRATION;
+    private long ACCESSTOKEN_EXPIRATION;
 
-    public  String createToke(Authentication authentication){
+    @Value("${jwt.refresh-token-validity-in-seconds}")
+    private long REFRESH_EXPIRATION;
+
+    public  String accessToken(Authentication authentication){
         Instant now = Instant.now();
-        Instant validity = now.plus(EXPIRATION, ChronoUnit.SECONDS);
+        Instant validity = now.plus(this.ACCESSTOKEN_EXPIRATION, ChronoUnit.SECONDS);
 
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
 
@@ -40,9 +44,29 @@ public class SecurityUtils {
                 .claim("khanhduc", authentication)
                 .build();
 
+        return jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, jwtClaimsSet)).getTokenValue();
+    }
+
+    public  String refreshToken(String email, LoginDTOResponse response){
+        Instant now = Instant.now();
+        Instant validity = now.plus(this.REFRESH_EXPIRATION, ChronoUnit.SECONDS);
+
+        JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
+
+        JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
+                .subject(email) //subject thường được sử dụng để chỉ ra người dùng hoặc thực thể mà token đại diện
+                .issuer("khanhduc.com")
+                .issuedAt(now)
+                .expiresAt(validity)
+                .claim("id", response.getId())
+                .claim("email", response.getEmail())
+                .claim("username", response.getUsername())
+                .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, jwtClaimsSet)).getTokenValue();
     }
+
+
     public static Optional<String> getCurrentUserLogin(){
         SecurityContext contextHolder = SecurityContextHolder.getContext();
         return Optional.ofNullable(extractPrincipal(contextHolder.getAuthentication()));

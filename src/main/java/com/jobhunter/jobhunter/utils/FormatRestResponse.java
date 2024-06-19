@@ -42,6 +42,6 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
-        return true;
+        return !String.class.isAssignableFrom(returnType.getParameterType());
     }
 }

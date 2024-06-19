@@ -20,19 +20,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class GlobalExceptionHandler extends Exception {
-
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {
             UsernameNotFoundException.class,
             BadCredentialsException.class,
             IdInvalidException.class
     })
-    public ResponseEntity<RestResponse<Object>> handlerIdException(Exception ex){
+    public ResponseEntity<RestResponse<Object>> handleAuthenticationExceptions(Exception ex) {
         RestResponse<Object> res = new RestResponse<>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
         res.setMessage(ex.getMessage());
-        res.setMessage("Exception occurs...");
+        res.setError("Exception occurs...");
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
@@ -71,8 +70,8 @@ public class GlobalExceptionHandler extends Exception {
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
-    public static ResponseEntity<CustomErrorResponse> handlerNoResourceFoundException(NoResourceFoundException ex){
-        CustomErrorResponse errorResponse =  CustomErrorResponse.builder()
+    public static ResponseEntity<CustomErrorResponse> handlerNoResourceFoundException(NoResourceFoundException ex) {
+        CustomErrorResponse errorResponse = CustomErrorResponse.builder()
                 .status(HttpStatus.NOT_FOUND.value())
                 .message("404 Not Found. URL may not exists")
                 .timestamp(new Date())
@@ -99,7 +98,6 @@ public class GlobalExceptionHandler extends Exception {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-
     @ExceptionHandler(IllegalArgumentException.class)
     public static ResponseEntity<CustomErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
@@ -112,11 +110,15 @@ public class GlobalExceptionHandler extends Exception {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public static ResponseEntity<EmailAlreadyExistsException> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        EmailAlreadyExistsException error = new EmailAlreadyExistsException(HttpStatus.CONFLICT.value(), "Email already exists", HttpStatus.CONFLICT.getReasonPhrase());
-        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    public static ResponseEntity<CustomErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        CustomErrorResponse errorResponse = CustomErrorResponse.builder()
+                .message("Email already exists")
+                .timestamp(new Date())
+                .status(HttpStatus.CONFLICT.value())
+                .error(HttpStatus.CONFLICT.getReasonPhrase())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
-
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public static ResponseEntity<CustomErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {

@@ -37,6 +37,7 @@ public class User {
     Gender gender;
 
     String address;
+    @Column(columnDefinition = "MEDIUMTEXT")
     String refreshToken;
     Instant createAt;
     Instant updateAt;
