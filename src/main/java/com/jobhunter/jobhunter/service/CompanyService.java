@@ -14,8 +14,11 @@ import com.jobhunter.jobhunter.utils.CompanyMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,13 +40,13 @@ public class CompanyService {
         return CompanyMapper.companyDTOResponse(company);
     }
 
-    public ResultPaginationDTO fetchAllCompany(Pageable pageable) {
-        Page<Company> companyPage = companyRepository.findAll(pageable);
+    public ResultPaginationDTO fetchAllCompany(Specification<Company> spec, Pageable pageable) {
+        Page<Company> companyPage = companyRepository.findAll(spec, pageable);
 
         ResultPaginationDTO rs = new ResultPaginationDTO();
         Meta mt = new Meta();
 
-        mt.setPage(companyPage.getNumber());
+        mt.setPage(companyPage.getNumber() + 1);
         mt.setPageSize(companyPage.getSize());
 
         mt.setTotalPages(companyPage.getTotalPages());
