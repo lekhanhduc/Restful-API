@@ -3,12 +3,9 @@ package com.jobhunter.jobhunter.service;
 
 import com.jobhunter.jobhunter.dto.pagination.Meta;
 import com.jobhunter.jobhunter.dto.pagination.ResultPaginationDTO;
-import com.jobhunter.jobhunter.dto.request.LoginDTORequest;
-import com.jobhunter.jobhunter.dto.request.LoginDTOResponse;
 import com.jobhunter.jobhunter.dto.response.UserDTOCreate;
 import com.jobhunter.jobhunter.dto.response.UserDTOResponse;
 import com.jobhunter.jobhunter.entity.User;
-import com.jobhunter.jobhunter.exception.GlobalExceptionHandler;
 import com.jobhunter.jobhunter.model.ResourceNotFoundException;
 import com.jobhunter.jobhunter.repository.UserRepository;
 import com.jobhunter.jobhunter.utils.UserMapper;
@@ -26,7 +23,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
 
     public UserDTOResponse hanleSaveUser(UserDTOCreate userDTOCreate){
         User findUserByEmail = userRepository.findByEmail(userDTOCreate.getEmail());
@@ -79,17 +75,6 @@ public class UserService {
         return rs;
     }
 
-    public LoginDTOResponse login(LoginDTORequest request){
-        User user = userRepository.findByEmail(request.getUsername());
-
-        if(passwordEncoder.matches(request.getPassword(), user.getPassword())){
-            return LoginDTOResponse.builder()
-                    .success(true)
-                    .build();
-        }
-        throw new GlobalExceptionHandler.IdInvalidException("Username or Password in correct");
-    }
-
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
@@ -100,5 +85,9 @@ public class UserService {
             user.setRefreshToken(token);
             userRepository.save(user);
         }
+    }
+
+    public User findByRefreshTokenAndEmail(String token, String email){
+        return userRepository.findByRefreshTokenAndEmail(token, email);
     }
 }

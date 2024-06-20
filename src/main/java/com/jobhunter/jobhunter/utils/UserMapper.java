@@ -5,7 +5,6 @@ import com.jobhunter.jobhunter.dto.response.UserDTOCreate;
 import com.jobhunter.jobhunter.dto.response.UserDTOResponse;
 import com.jobhunter.jobhunter.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 
 @RequiredArgsConstructor
 public class UserMapper {
@@ -33,12 +32,12 @@ public class UserMapper {
                                          .build();
     }
 
-    public  String toUserResponseMapper(Authentication authentication, LoginDTOResponse response) {
-        return securityUtils.accessToken(authentication, LoginDTOResponse.builder()
-                .id(response.getId())
-                .email(response.getEmail())
-                .username(response.getUsername())
+    public static LoginDTOResponse mapToDTOResponse(User user) {
+        return LoginDTOResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .username(user.getUsername())
                 .success(true)
-                .build());
+                .build();
     }
 }

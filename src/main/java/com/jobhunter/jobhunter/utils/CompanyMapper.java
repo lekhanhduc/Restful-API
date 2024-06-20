@@ -27,8 +27,8 @@ public class CompanyMapper {
                 .address(company.getAddress())
                 .description(company.getDescription())
                 .logo(company.getLogo())
-                .createBy(company.getCreateBy())
-                .createAt(company.getCreateAt())
+                .createdBy(company.getCreatedBy())
+                .createdAt(company.getCreatedAt())
                 .success(true)
                 .build();
     }
@@ -39,8 +39,8 @@ public class CompanyMapper {
                 .address(company.getAddress())
                 .description(company.getDescription())
                 .logo(company.getLogo())
-                .updateBy(company.getUpdateBy())
-                .updateAt(company.getUpdateAt())
+                .updateBy(company.getUpdatedBy())
+                .updateAt(company.getUpdatedAt())
                 .success(true)
                 .build();
     }
@@ -51,8 +51,8 @@ public class CompanyMapper {
                         .name(t.getName())
                         .address(t.getAddress())
                         .description(t.getDescription())
-                        .createAt(t.getCreateAt())
-                        .createBy(t.getCreateBy())
+                        .createdAt(t.getCreatedAt())
+                        .createdBy(t.getCreatedBy())
                         .build())
                         .toList();
     }

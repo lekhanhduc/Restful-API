@@ -19,7 +19,7 @@ public class CompanyDTOUpdateResponse {
     String address;
     String description;
     String logo;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
     Instant updateAt;
     String updateBy;
     boolean success;

@@ -42,20 +42,26 @@ public class SecurityUtils {
         return new SecretKeySpec(keyBytes, 0, keyBytes.length, JWT_ALGORITHM.getName());
     }
 
-    public void checkRefreshToken(String token){
+    public Jwt checkRefreshToken(String token){
         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder
                 .withSecretKey(getSecretKey())
                 .macAlgorithm(SecurityUtils.JWT_ALGORITHM).build();
+        try {
+            return jwtDecoder.decode(token);
+        }catch (Exception e){
+            System.out.println("Refresh token error");
+            throw e;
+        }
     }
 
-    public  String accessToken(Authentication authentication, LoginDTOResponse response){
+    public  String accessToken(String email, LoginDTOResponse response){
         Instant now = Instant.now();
         Instant validity = now.plus(this.ACCESSION_EXPIRATION, ChronoUnit.SECONDS);
 
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
 
         JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
-                .subject(authentication.getName()) //subject thường được sử dụng để chỉ ra người dùng hoặc thực thể mà token đại diện
+                .subject(email) //subject thường được sử dụng để chỉ ra người dùng hoặc thực thể mà token đại diện
                 .issuer("khanhduc.com")
                 .issuedAt(now)
                 .expiresAt(validity)
@@ -86,7 +92,6 @@ public class SecurityUtils {
         return jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, jwtClaimsSet)).getTokenValue();
     }
 
-
     public static Optional<String> getCurrentUserLogin(){
         SecurityContext contextHolder = SecurityContextHolder.getContext();
         return Optional.ofNullable(extractPrincipal(contextHolder.getAuthentication()));
@@ -111,6 +116,5 @@ public class SecurityUtils {
                 .filter(authentication -> authentication.getCredentials() instanceof String)
                 .map(authentication -> (String) authentication.getCredentials());
     }
-
 
 }

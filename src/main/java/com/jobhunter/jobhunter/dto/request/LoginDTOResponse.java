@@ -1,6 +1,7 @@
 package com.jobhunter.jobhunter.dto.request;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,5 +16,6 @@ public class LoginDTOResponse {
     String email;
     String username;
     boolean success;
+    @JsonProperty("access_token")
     String token;
 }

@@ -32,21 +32,21 @@ public class Company {
     String logo;
 
 
-    Instant createAt;
-    Instant updateAt;
+    Instant createdAt;
+    Instant updatedAt;
 
-    String createBy;
-    String updateBy;
+    String createdBy;
+    String updatedBy;
 
     @PrePersist
     public void handlerBeforeCreate(){
-        this.createBy = SecurityUtils.getCurrentUserLogin().isPresent() ? SecurityUtils.getCurrentUserLogin().get() : "";
-        this.createAt = Instant.now();
+        this.createdBy = SecurityUtils.getCurrentUserLogin().isPresent() ? SecurityUtils.getCurrentUserLogin().get() : "";
+        this.createdAt = Instant.now();
     }
 
     @PreUpdate
     public void handlerAfterUpdate(){
-        this.updateBy = SecurityUtils.getCurrentUserLogin().isPresent() ? SecurityUtils.getCurrentUserLogin().get() : "";
-        this.updateAt = Instant.now();
+        this.updatedBy = SecurityUtils.getCurrentUserLogin().isPresent() ? SecurityUtils.getCurrentUserLogin().get() : "";
+        this.updatedAt = Instant.now();
     }
 }

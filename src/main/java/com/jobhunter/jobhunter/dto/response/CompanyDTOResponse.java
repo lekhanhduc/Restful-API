@@ -19,9 +19,9 @@ public class CompanyDTOResponse {
     String address;
     String description;
     String logo;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
-    Instant createAt;
-    String createBy;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
+    Instant createdAt;
+    String createdBy;
     boolean success;
 
 }
