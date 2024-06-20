@@ -1,13 +1,16 @@
 package com.jobhunter.jobhunter.utils;
 
+import com.jobhunter.jobhunter.dto.request.LoginDTOResponse;
 import com.jobhunter.jobhunter.dto.response.UserDTOCreate;
 import com.jobhunter.jobhunter.dto.response.UserDTOResponse;
 import com.jobhunter.jobhunter.entity.User;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 
+@RequiredArgsConstructor
 public class UserMapper {
 
-    private UserMapper(){
-    }
+    private final SecurityUtils securityUtils;
 
     public static User toUser(UserDTOCreate userDTOCreate){
         return User.builder()
@@ -28,5 +31,14 @@ public class UserMapper {
                                          .age(user.getAge())
                                          .gender(user.getGender())
                                          .build();
+    }
+
+    public  String toUserResponseMapper(Authentication authentication, LoginDTOResponse response) {
+        return securityUtils.accessToken(authentication, LoginDTOResponse.builder()
+                .id(response.getId())
+                .email(response.getEmail())
+                .username(response.getUsername())
+                .success(true)
+                .build());
     }
 }

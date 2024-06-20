@@ -1,0 +1,455 @@
+{
+	"info": {
+		"_postman_id": "2b43fbdb-2d43-4017-9cd0-5a8abda51e89",
+		"name": "Spring-Restful",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34875600"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "save",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJraGFuaGR1Yy5jb20iLCJzdWIiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiZXhwIjoxNzE4ODk2MzM3LCJpYXQiOjE3MTg4MDk5MzcsImtoYW5oZHVjIjp7InByaW5jaXBhbCI6eyJwYXNzd29yZCI6bnVsbCwidXNlcm5hbWUiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlt7InJvbGUiOiJST0xFX1VTRVIifV0sImFjY291bnROb25FeHBpcmVkIjp0cnVlLCJhY2NvdW50Tm9uTG9ja2VkIjp0cnVlLCJjcmVkZW50aWFsc05vbkV4cGlyZWQiOnRydWUsImVuYWJsZWQiOnRydWV9LCJjcmVkZW50aWFscyI6bnVsbCwiYXV0aG9yaXRpZXMiOlt7InJvbGUiOiJST0xFX1VTRVIifV0sImRldGFpbHMiOm51bGwsImF1dGhlbnRpY2F0ZWQiOnRydWV9fQ.2xn6YKzYZxgueIjjkEiZ2NZgb_gtr2WQklVD-Jsfn-87n8IMQqSpWoMu2Y15oC--GPplnJY0NfTw3_e72Mfd4w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ducdeptrai@gmail.com\",\r\n    \"name\": \"duc dep trai\",\r\n    \"password\": \"123\",\r\n    \"age\": 20,\r\n    \"address\": \"Nghe An\",\r\n    \"gender\": \"MALE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJraGFuaGR1Yy5jb20iLCJzdWIiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiZXhwIjoxNzE4ODk2MzM3LCJpYXQiOjE3MTg4MDk5MzcsImtoYW5oZHVjIjp7InByaW5jaXBhbCI6eyJwYXNzd29yZCI6bnVsbCwidXNlcm5hbWUiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlt7InJvbGUiOiJST0xFX1VTRVIifV0sImFjY291bnROb25FeHBpcmVkIjp0cnVlLCJhY2NvdW50Tm9uTG9ja2VkIjp0cnVlLCJjcmVkZW50aWFsc05vbkV4cGlyZWQiOnRydWUsImVuYWJsZWQiOnRydWV9LCJjcmVkZW50aWFscyI6bnVsbCwiYXV0aG9yaXRpZXMiOlt7InJvbGUiOiJST0xFX1VTRVIifV0sImRldGFpbHMiOm51bGwsImF1dGhlbnRpY2F0ZWQiOnRydWV9fQ.2xn6YKzYZxgueIjjkEiZ2NZgb_gtr2WQklVD-Jsfn-87n8IMQqSpWoMu2Y15oC--GPplnJY0NfTw3_e72Mfd4w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/users/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJraGFuaGR1Yy5jb20iLCJzdWIiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiZXhwIjoxNzE4NzE4Mjk3LCJpYXQiOjE3MTg2MzE4OTcsImtoYW5oIGR1YyI6ImRlcCB0cmFpIn0.oWImtJ9Hok7GA7SpjFhfR2Nmry_ObdZwBdm9RTycCtjKf95DzTc6PaBrPX7OBA8Jz7bmtmVnFy8MqzTG5mGr2Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/users/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJraGFuaGR1Yy5jb20iLCJzdWIiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiZXhwIjoxNzE4ODk2MzM3LCJpYXQiOjE3MTg4MDk5MzcsImtoYW5oZHVjIjp7InByaW5jaXBhbCI6eyJwYXNzd29yZCI6bnVsbCwidXNlcm5hbWUiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlt7InJvbGUiOiJST0xFX1VTRVIifV0sImFjY291bnROb25FeHBpcmVkIjp0cnVlLCJhY2NvdW50Tm9uTG9ja2VkIjp0cnVlLCJjcmVkZW50aWFsc05vbkV4cGlyZWQiOnRydWUsImVuYWJsZWQiOnRydWV9LCJjcmVkZW50aWFscyI6bnVsbCwiYXV0aG9yaXRpZXMiOlt7InJvbGUiOiJST0xFX1VTRVIifV0sImRldGFpbHMiOm51bGwsImF1dGhlbnRpY2F0ZWQiOnRydWV9fQ.2xn6YKzYZxgueIjjkEiZ2NZgb_gtr2WQklVD-Jsfn-87n8IMQqSpWoMu2Y15oC--GPplnJY0NfTw3_e72Mfd4w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/getAll",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJraGFuaGR1Yy5jb20iLCJzdWIiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiZXhwIjoxNzE4OTAxMzkyLCJpYXQiOjE3MTg4MTQ5OTIsImtoYW5oZHVjIjp7InByaW5jaXBhbCI6eyJwYXNzd29yZCI6bnVsbCwidXNlcm5hbWUiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlt7InJvbGUiOiJST0xFX1VTRVIifV0sImFjY291bnROb25FeHBpcmVkIjp0cnVlLCJhY2NvdW50Tm9uTG9ja2VkIjp0cnVlLCJjcmVkZW50aWFsc05vbkV4cGlyZWQiOnRydWUsImVuYWJsZWQiOnRydWV9LCJjcmVkZW50aWFscyI6bnVsbCwiYXV0aG9yaXRpZXMiOlt7InJvbGUiOiJST0xFX1VTRVIifV0sImRldGFpbHMiOm51bGwsImF1dGhlbnRpY2F0ZWQiOnRydWV9fQ.L1PEGHsQmv2_rFQVHsTVeMjIAzM3XBHlIzhSn40BVgAh6igqki-niJDJ5LHTzaTMYmu4S5np6bNbP6k6g-5CFw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 7,\r\n    \"email\": \"duclkde170045@fpt.edu.vn\",\r\n    \"name\": \" duc\",\r\n    \"password\": \"170045\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/users/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "module auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n    \"username\": \"lekhanhduccc@gmail.com\",\r\n    \"password\": \"123\"\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "module company",
+			"item": [
+				{
+					"name": "create company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJraGFuaGR1Yy5jb20iLCJzdWIiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiZXhwIjoxNzE4ODAyNTcyLCJpYXQiOjE3MTg3MTYxNzIsImtoYW5oZHVjIjoiZGVwIHRyYWkifQ.lYc5Qc3UUhMfoWywfvgX2x-ejeL_U7bAilASi4a75vFFWfxAkGGYvDdxqek4VPbyqwOqY_m93p_QpmHbCPUB6w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Digital-Tome\",\r\n    \"description\": \"Reading Book Online\",\r\n    \"address\": \"Da Nang\",\r\n    \"logo\": \"comany.png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/companies",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all Company and pagination",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJraGFuaGR1Yy5jb20iLCJzdWIiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiZXhwIjoxNzE4OTAxMzkyLCJpYXQiOjE3MTg4MTQ5OTIsImtoYW5oZHVjIjp7InByaW5jaXBhbCI6eyJwYXNzd29yZCI6bnVsbCwidXNlcm5hbWUiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlt7InJvbGUiOiJST0xFX1VTRVIifV0sImFjY291bnROb25FeHBpcmVkIjp0cnVlLCJhY2NvdW50Tm9uTG9ja2VkIjp0cnVlLCJjcmVkZW50aWFsc05vbkV4cGlyZWQiOnRydWUsImVuYWJsZWQiOnRydWV9LCJjcmVkZW50aWFscyI6bnVsbCwiYXV0aG9yaXRpZXMiOlt7InJvbGUiOiJST0xFX1VTRVIifV0sImRldGFpbHMiOm51bGwsImF1dGhlbnRpY2F0ZWQiOnRydWV9fQ.L1PEGHsQmv2_rFQVHsTVeMjIAzM3XBHlIzhSn40BVgAh6igqki-niJDJ5LHTzaTMYmu4S5np6bNbP6k6g-5CFw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "page",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "size",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "sort",
+								"value": "name,asc",
+								"type": "text"
+							},
+							{
+								"key": "filter",
+								"value": "CreateBy ~ '@gmail.com' and name : 'duc dep trai'",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/companies?page=1&size=2&sort=name,asc&filter=name:'duc dep trai' and description ~ 'hoc gioi game'",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"companies"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								},
+								{
+									"key": "sort",
+									"value": "name,asc"
+								},
+								{
+									"key": "filter",
+									"value": "name:'duc dep trai' and description ~ 'hoc gioi game'"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get company by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJraGFuaGR1Yy5jb20iLCJzdWIiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiZXhwIjoxNzE4ODAyNTcyLCJpYXQiOjE3MTg3MTYxNzIsImtoYW5oZHVjIjoiZGVwIHRyYWkifQ.lYc5Qc3UUhMfoWywfvgX2x-ejeL_U7bAilASi4a75vFFWfxAkGGYvDdxqek4VPbyqwOqY_m93p_QpmHbCPUB6w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/companies/9",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"companies",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJraGFuaGR1Yy5jb20iLCJzdWIiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiZXhwIjoxNzE4ODAyNTcyLCJpYXQiOjE3MTg3MTYxNzIsImtoYW5oZHVjIjoiZGVwIHRyYWkifQ.lYc5Qc3UUhMfoWywfvgX2x-ejeL_U7bAilASi4a75vFFWfxAkGGYvDdxqek4VPbyqwOqY_m93p_QpmHbCPUB6w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Digital-Tome\",\r\n    \"description\": \"Reading Book\",\r\n    \"address\": \"localhost:8080\",\r\n    \"logo\": \"book.png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/companies/9",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"companies",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJraGFuaGR1Yy5jb20iLCJzdWIiOiJsZWtoYW5oZHVjY2NAZ21haWwuY29tIiwiZXhwIjoxNzE4ODAyNTcyLCJpYXQiOjE3MTg3MTYxNzIsImtoYW5oZHVjIjoiZGVwIHRyYWkifQ.lYc5Qc3UUhMfoWywfvgX2x-ejeL_U7bAilASi4a75vFFWfxAkGGYvDdxqek4VPbyqwOqY_m93p_QpmHbCPUB6w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/companies/111a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"companies",
+								"111a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

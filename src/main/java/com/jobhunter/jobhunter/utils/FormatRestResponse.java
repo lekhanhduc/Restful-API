@@ -32,7 +32,7 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
         }
         if(status > 400){
             return body;
-        } else{
+        } else {
             res.setData(body);
             ApiMessage message = returnType.getMethodAnnotation(ApiMessage.class);
             res.setMessage(message != null ? message.value() : "CALL API SUCCESS");
@@ -42,6 +42,6 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
-        return !String.class.isAssignableFrom(returnType.getParameterType());
+        return true;
     }
 }

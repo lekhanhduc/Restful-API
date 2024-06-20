@@ -2,6 +2,7 @@ package com.jobhunter.jobhunter.utils;
 
 
 import com.jobhunter.jobhunter.dto.request.LoginDTOResponse;
+import com.nimbusds.jose.util.Base64;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,8 @@ import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -24,15 +27,30 @@ public class SecurityUtils {
 
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS512;
 
+    @Value("${jwt.base64.secret}")
+    private String KEY_SECRET;
+
     @Value("${jwt.token-validity-in-seconds}")
-    private long ACCESSTOKEN_EXPIRATION;
+    private long ACCESSION_EXPIRATION;
 
     @Value("${jwt.refresh-token-validity-in-seconds}")
     private long REFRESH_EXPIRATION;
 
-    public  String accessToken(Authentication authentication){
+
+    private SecretKey getSecretKey(){
+        byte[] keyBytes = Base64.from(KEY_SECRET).decode();
+        return new SecretKeySpec(keyBytes, 0, keyBytes.length, JWT_ALGORITHM.getName());
+    }
+
+    public void checkRefreshToken(String token){
+        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder
+                .withSecretKey(getSecretKey())
+                .macAlgorithm(SecurityUtils.JWT_ALGORITHM).build();
+    }
+
+    public  String accessToken(Authentication authentication, LoginDTOResponse response){
         Instant now = Instant.now();
-        Instant validity = now.plus(this.ACCESSTOKEN_EXPIRATION, ChronoUnit.SECONDS);
+        Instant validity = now.plus(this.ACCESSION_EXPIRATION, ChronoUnit.SECONDS);
 
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
 
@@ -41,7 +59,9 @@ public class SecurityUtils {
                 .issuer("khanhduc.com")
                 .issuedAt(now)
                 .expiresAt(validity)
-                .claim("khanhduc", authentication)
+                .claim("id", response.getId())
+                .claim("username", response.getUsername())
+                .claim("email", response.getEmail())
                 .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, jwtClaimsSet)).getTokenValue();
