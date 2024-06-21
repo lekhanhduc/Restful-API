@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.util.List;
 
 
 @Entity
@@ -37,6 +38,9 @@ public class Company {
 
     String createdBy;
     String updatedBy;
+
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<User> users;
 
     @PrePersist
     public void handlerBeforeCreate(){

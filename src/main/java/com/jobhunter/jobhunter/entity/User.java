@@ -39,20 +39,24 @@ public class User {
     String address;
     @Column(columnDefinition = "MEDIUMTEXT")
     String refreshToken;
-    Instant createAt;
-    Instant updateAt;
-    String createBy;
-    String updateBy;
+    Instant createdAt;
+    Instant updatedAt;
+    String createdBy;
+    String updatedBy;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id")
+    Company company;
 
     @PrePersist
     public void handlerBeforeCreate(){
-        this.createBy = SecurityUtils.getCurrentUserLogin().isPresent() ? SecurityUtils.getCurrentUserLogin().get() : "";
-        this.createAt = Instant.now();
+        this.createdBy = SecurityUtils.getCurrentUserLogin().isPresent() ? SecurityUtils.getCurrentUserLogin().get() : "";
+        this.createdAt = Instant.now();
     }
 
     @PreUpdate
     public void handlerAfterUpdate(){
-        this.updateBy = SecurityUtils.getCurrentUserLogin().isPresent() ? SecurityUtils.getCurrentUserLogin().get() : "";
-        this.updateAt = Instant.now();
+        this.updatedBy = SecurityUtils.getCurrentUserLogin().isPresent() ? SecurityUtils.getCurrentUserLogin().get() : "";
+        this.updatedAt = Instant.now();
     }
 }

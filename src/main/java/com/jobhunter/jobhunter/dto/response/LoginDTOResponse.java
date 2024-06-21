@@ -1,4 +1,4 @@
-package com.jobhunter.jobhunter.dto.request;
+package com.jobhunter.jobhunter.dto.response;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

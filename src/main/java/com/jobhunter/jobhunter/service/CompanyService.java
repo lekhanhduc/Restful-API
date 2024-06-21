@@ -18,6 +18,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CompanyService {
@@ -60,6 +62,10 @@ public class CompanyService {
         return companyRepository.findById(id)
                 .map(CompanyMapper::companyDTOResponse)
                 .orElseThrow(() ->  new ResourceNotFoundException("User not found with id " + id));
+    }
+
+    public Optional<Company> findById(Long id) {
+        return companyRepository.findById(id);
     }
 
     public CompanyDTOUpdateResponse updateCompany(Long id, CompanyDTOUpdate companyDTOUpdate) {

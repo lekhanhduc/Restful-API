@@ -5,6 +5,8 @@ import com.jobhunter.jobhunter.utils.enums.Gender;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,4 +19,7 @@ public class UserDTOResponse {
     String address;
     int age;
     Gender gender;
+    Instant createdAt;
+    Instant updatedAt;
+    CompanyDTO company;
 }

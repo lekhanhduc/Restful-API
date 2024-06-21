@@ -3,8 +3,10 @@ package com.jobhunter.jobhunter.service;
 
 import com.jobhunter.jobhunter.dto.pagination.Meta;
 import com.jobhunter.jobhunter.dto.pagination.ResultPaginationDTO;
-import com.jobhunter.jobhunter.dto.response.UserDTOCreate;
+import com.jobhunter.jobhunter.dto.request.UserDTOCreate;
+import com.jobhunter.jobhunter.dto.response.DeleteDTOResponse;
 import com.jobhunter.jobhunter.dto.response.UserDTOResponse;
+import com.jobhunter.jobhunter.entity.Company;
 import com.jobhunter.jobhunter.entity.User;
 import com.jobhunter.jobhunter.model.ResourceNotFoundException;
 import com.jobhunter.jobhunter.repository.UserRepository;
@@ -16,45 +18,73 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CompanyService companyService;
     private final PasswordEncoder passwordEncoder;
 
-    public UserDTOResponse hanleSaveUser(UserDTOCreate userDTOCreate){
-        User findUserByEmail = userRepository.findByEmail(userDTOCreate.getEmail());
-        if(findUserByEmail != null){
+    public UserDTOResponse handleSaveUser(UserDTOCreate userDTOCreate) {
+        if (userRepository.existsByEmail(userDTOCreate.getEmail())) {
             throw new DataIntegrityViolationException("Email already exists: " + userDTOCreate.getEmail());
         }
-        // Buoc 1: chuyen DTO sang Entity
-        User user = UserMapper.toUser(userDTOCreate);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user = userRepository.save(user);
 
-        // Buoc 2: chuyen tu entity sang DTO de gui sang controller
+        User user = UserMapper.toUser(userDTOCreate);
+        user.setPassword(passwordEncoder.encode(userDTOCreate.getPassword()));
+
+        if (userDTOCreate.getCompanyId() != null) {
+            Long companyId = userDTOCreate.getCompanyId();
+            Company company = companyService.findById(companyId).orElse(null);
+            user.setCompany(company);
+        }
+
+        user = userRepository.save(user);
         return UserMapper.toUserDTOResponse(user);
     }
 
 
-    public void deleteUserById(Long id){
-         userRepository.deleteById(id);
+    public DeleteDTOResponse deleteUserById(Long id){
+         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
+
+         userRepository.deleteById(user.getId());
+        return DeleteDTOResponse.builder()
+                .message("Delete Successfully")
+                .success(true)
+                .build();
     }
 
 
-    public User getUserById(Long id){
-        return userRepository.findById(id).orElse(null);
+    public UserDTOResponse getUserById(Long id) {
+       return userRepository.findById(id).map(UserMapper::toUserDTOResponse)
+               .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
+    public UserDTOResponse updateUser(Long id, UserDTOCreate userDTOCreate) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() ->   new ResourceNotFoundException("User not found with id " + id));
 
-    public UserDTOResponse updateUser(User request){
-        User user = this.getUserById(request.getId());
-        if(user == null){
-            throw new ResourceNotFoundException("Id User not found");
+        if (userDTOCreate.getEmail() != null) {
+            if (!StringUtils.hasText(userDTOCreate.getUsername())) {
+                throw new IllegalArgumentException("Name Company không được để trống");
+            }
+            existingUser.setEmail(userDTOCreate.getEmail());
         }
-       return UserMapper.toUserDTOResponse(request);
+        if (userDTOCreate.getUsername() != null) {
+            existingUser.setUsername(userDTOCreate.getUsername());
+        }
+        if (userDTOCreate.getAge() != 0) {
+            existingUser.setAge(userDTOCreate.getAge());
+        }
+        if (userDTOCreate.getAddress() != null) {
+            existingUser.setAddress(userDTOCreate.getAddress());
+        }
+
+        User updatedUser = userRepository.save(existingUser);
+        return UserMapper.toUserDTOResponse(updatedUser);
     }
 
     public ResultPaginationDTO getAll(Specification<User> specification, Pageable pageable){

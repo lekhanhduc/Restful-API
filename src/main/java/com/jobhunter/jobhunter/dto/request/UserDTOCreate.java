@@ -1,4 +1,4 @@
-package com.jobhunter.jobhunter.dto.response;
+package com.jobhunter.jobhunter.dto.request;
 
 
 import com.jobhunter.jobhunter.utils.enums.Gender;
@@ -15,10 +15,11 @@ import lombok.experimental.FieldDefaults;
 @Builder
 public class UserDTOCreate {
     String email;
-    String name;
+    String username;
     String password;
     String address;
     int age;
     @Enumerated(EnumType.STRING)
     Gender gender;
+    Long companyId;
 }

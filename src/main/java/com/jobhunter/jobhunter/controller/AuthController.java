@@ -2,7 +2,7 @@ package com.jobhunter.jobhunter.controller;
 
 import com.jobhunter.jobhunter.annotation.ApiMessage;
 import com.jobhunter.jobhunter.dto.request.LoginDTORequest;
-import com.jobhunter.jobhunter.dto.request.LoginDTOResponse;
+import com.jobhunter.jobhunter.dto.response.LoginDTOResponse;
 import com.jobhunter.jobhunter.entity.User;
 import com.jobhunter.jobhunter.model.ResourceNotFoundException;
 import com.jobhunter.jobhunter.service.UserService;

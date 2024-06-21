@@ -1,7 +1,7 @@
 package com.jobhunter.jobhunter.utils;
 
 
-import com.jobhunter.jobhunter.dto.request.LoginDTOResponse;
+import com.jobhunter.jobhunter.dto.response.LoginDTOResponse;
 import com.nimbusds.jose.util.Base64;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

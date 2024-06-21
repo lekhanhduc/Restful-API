@@ -1,6 +1,6 @@
 package com.jobhunter.jobhunter.utils;
 
-import com.jobhunter.jobhunter.dto.request.LoginDTOResponse;
+import com.jobhunter.jobhunter.dto.response.LoginDTOResponse;
 import com.jobhunter.jobhunter.entity.User;
 import com.jobhunter.jobhunter.service.UserService;
 import lombok.RequiredArgsConstructor;
