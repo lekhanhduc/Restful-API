@@ -1,5 +1,6 @@
 package com.jobhunter.jobhunter.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jobhunter.jobhunter.utils.SecurityUtils;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -40,6 +41,7 @@ public class Company {
     String updatedBy;
 
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore // sử dụng để tránh trường hợp lặp vô hạn trong quan hệ 1-n và n-n từ json qua java, java qua json
     List<User> users;
 
     @PrePersist

@@ -8,8 +8,10 @@ import com.jobhunter.jobhunter.dto.response.CompanyDTOResponse;
 import com.jobhunter.jobhunter.dto.response.CompanyDTOUpdateResponse;
 import com.jobhunter.jobhunter.dto.response.DeleteDTOResponse;
 import com.jobhunter.jobhunter.entity.Company;
+import com.jobhunter.jobhunter.entity.User;
 import com.jobhunter.jobhunter.model.ResourceNotFoundException;
 import com.jobhunter.jobhunter.repository.CompanyRepository;
+import com.jobhunter.jobhunter.repository.UserRepository;
 import com.jobhunter.jobhunter.utils.CompanyMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,6 +28,7 @@ import java.util.Optional;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
 
     public CompanyDTOResponse saveCompany(CompanyDTOCreate companyDTOCreate) {
         String name = companyDTOCreate.getName();
@@ -95,6 +99,9 @@ public class CompanyService {
     public DeleteDTOResponse deleteCompany(Long id){
         Company company = companyRepository.findById(id).orElseThrow(
                 () ->  new ResourceNotFoundException("User not found with id " + id));
+
+        List<User> fetchAllUserCompany = userRepository.findByCompany(company);
+        userRepository.deleteAll(fetchAllUserCompany);
 
         companyRepository.deleteById(company.getId());
         return DeleteDTOResponse.builder()

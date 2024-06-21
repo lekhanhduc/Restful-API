@@ -20,6 +20,6 @@ public class UserDTOResponse {
     int age;
     Gender gender;
     Instant createdAt;
-    Instant updatedAt;
+    String createdBy;
     CompanyDTO company;
 }

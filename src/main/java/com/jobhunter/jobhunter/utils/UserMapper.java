@@ -25,13 +25,14 @@ public class UserMapper {
     }
 
     public static UserDTOResponse toUserDTOResponse(User user) {
-        CompanyDTO companyDTO = null;
+        CompanyDTO companyDTO;
+        // Kiểm tra nếu user.getCompany() là null
         if (user.getCompany() != null) {
-            Company company = user.getCompany();
-            companyDTO = CompanyDTO.builder()
-                    .id(company.getId())
-                    .name(company.getName())
-                    .build();
+            Long companyId = user.getCompany().getId() != null ? user.getCompany().getId() : 0L;
+            String companyName = user.getCompany().getName() != null ? user.getCompany().getName() : "null";
+            companyDTO = new CompanyDTO(companyId, companyName);
+        } else {
+            companyDTO = new CompanyDTO(0L, "null");
         }
 
         return UserDTOResponse.builder()
@@ -41,7 +42,7 @@ public class UserMapper {
                 .age(user.getAge())
                 .gender(user.getGender())
                 .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
+                .createdBy(user.getCreatedBy())
                 .company(companyDTO)
                 .build();
     }

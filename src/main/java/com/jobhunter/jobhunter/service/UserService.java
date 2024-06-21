@@ -83,6 +83,12 @@ public class UserService {
             existingUser.setAddress(userDTOCreate.getAddress());
         }
 
+        if(userDTOCreate.getCompanyId() != null){
+            Company company = companyService.findById(userDTOCreate.getCompanyId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Company not found with id " + userDTOCreate.getCompanyId()));
+            existingUser.setCompany(company);
+        }
+
         User updatedUser = userRepository.save(existingUser);
         return UserMapper.toUserDTOResponse(updatedUser);
     }
