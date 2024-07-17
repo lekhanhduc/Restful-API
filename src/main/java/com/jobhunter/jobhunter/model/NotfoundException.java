@@ -5,10 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class NotfoundException extends RuntimeException{
-    protected CustomError customError;
+public class NotfoundException extends RuntimeException {
+    private CustomError customError;
 
-    public NotfoundException(CustomError customError) {
-        this.customError = customError;
+    public NotfoundException(String message) {
+        super(message);
+        this.customError = new CustomError("404", message); 
     }
 }

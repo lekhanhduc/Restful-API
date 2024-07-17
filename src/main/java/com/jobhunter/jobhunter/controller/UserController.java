@@ -54,7 +54,7 @@ public class UserController {
 
     @PutMapping("/users")
     @ApiMessage("Update User")
-    public ResponseEntity<UserDTOResponse> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTOCreate userDTOCreate) {
+    public ResponseEntity<UserDTOResponse> updateUser(Long id, @Valid @RequestBody UserDTOCreate userDTOCreate) {
         try {
             UserDTOResponse updatedUser = userService.updateUser(id, userDTOCreate);
             return ResponseEntity.status(HttpStatus.OK).body(updatedUser);

@@ -99,7 +99,7 @@ public class UserService {
         ResultPaginationDTO rs = new ResultPaginationDTO();
         Meta meta = new Meta();
 
-        meta.setPage(pageable.getPageNumber());
+        meta.setPage(pageable.getPageNumber() + 1);
         meta.setPageSize(pageable.getPageSize());
 
         meta.setTotalPages(listUser.getTotalPages());
