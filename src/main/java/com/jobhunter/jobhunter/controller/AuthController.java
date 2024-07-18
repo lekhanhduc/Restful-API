@@ -18,7 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import static com.jobhunter.jobhunter.utils.UserMapper.mapToDTOResponse;
+import static com.jobhunter.jobhunter.mapper.UserMapper.mapToDTOResponse;
 
 @RestController
 @RequestMapping("/api/v1")

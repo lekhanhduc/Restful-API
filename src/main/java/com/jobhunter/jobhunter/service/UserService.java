@@ -10,7 +10,7 @@ import com.jobhunter.jobhunter.entity.Company;
 import com.jobhunter.jobhunter.entity.User;
 import com.jobhunter.jobhunter.model.ResourceNotFoundException;
 import com.jobhunter.jobhunter.repository.UserRepository;
-import com.jobhunter.jobhunter.utils.UserMapper;
+import com.jobhunter.jobhunter.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;

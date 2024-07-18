@@ -1,4 +1,4 @@
-package com.jobhunter.jobhunter.utils;
+package com.jobhunter.jobhunter.mapper;
 
 import com.jobhunter.jobhunter.dto.request.CompanyDTOCreate;
 import com.jobhunter.jobhunter.dto.response.CompanyDTOResponse;

@@ -2,7 +2,6 @@ package com.jobhunter.jobhunter.controller;
 
 import com.jobhunter.jobhunter.dto.pagination.ResultPaginationDTO;
 import com.jobhunter.jobhunter.entity.Skill;
-import com.jobhunter.jobhunter.entity.User;
 import com.jobhunter.jobhunter.service.SkillService;
 import com.turkraft.springfilter.boot.Filter;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +38,12 @@ public class SkillController {
     @GetMapping("/getAll")
     public ResponseEntity<ResultPaginationDTO> getAllSkill(@Filter Specification<Skill> spec, Pageable pageable){
         return ResponseEntity.ok().body(skillService.getAll(spec, pageable));
+    }
+
+    @GetMapping("get/{id}")
+    public ResponseEntity<Skill> skillById(@PathVariable Long id) {
+        Skill skill = skillService.findById(id);
+        return ResponseEntity.ok(skill);
     }
 
     @DeleteMapping("/delete/{id}")

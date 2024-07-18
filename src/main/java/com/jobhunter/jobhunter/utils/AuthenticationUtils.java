@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import static com.jobhunter.jobhunter.utils.UserMapper.mapToDTOResponse;
+import static com.jobhunter.jobhunter.mapper.UserMapper.mapToDTOResponse;
 
 @Service
 @RequiredArgsConstructor

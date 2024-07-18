@@ -1,11 +1,11 @@
 package com.jobhunter.jobhunter.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jobhunter.jobhunter.utils.SecurityUtils;
 import com.jobhunter.jobhunter.utils.enums.Level;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -25,6 +25,7 @@ public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @NotBlank(message = "Name cannot be null")
     String name;
     String location;
     double salary;
@@ -64,4 +65,5 @@ public class Job {
         this.updatedAt = Instant.now();
         this.updatedBy = SecurityUtils.getCurrentUserLogin().isPresent() ? SecurityUtils.getCurrentUserLogin().get() : "";
     }
+
 }

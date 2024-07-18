@@ -4,7 +4,6 @@ package com.jobhunter.jobhunter.service;
 import com.jobhunter.jobhunter.dto.pagination.Meta;
 import com.jobhunter.jobhunter.dto.pagination.ResultPaginationDTO;
 import com.jobhunter.jobhunter.entity.Skill;
-import com.jobhunter.jobhunter.entity.User;
 import com.jobhunter.jobhunter.model.NotfoundException;
 import com.jobhunter.jobhunter.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +20,9 @@ public class SkillService {
 
     private final SkillRepository skillRepository;
 
-    public Skill findSkillByName(String name){
-        return skillRepository.findSkillByName(name);
+    public Skill findById(Long id){
+        return skillRepository.findById(id)
+                .orElseThrow(()-> new NotfoundException("SKill not exists"));
     }
 
     public ResultPaginationDTO getAll(Specification<Skill> specification, Pageable pageable){
@@ -67,6 +65,10 @@ public class SkillService {
     public void deleteById(Long id){
         Skill skill = skillRepository.findById(id).orElseThrow(() -> new NotfoundException("Skill not found"));
         if(skill != null){
+            // khi xóa 1 skill(kĩ năng) -> thì phải xóa kĩ năng đó bên bảng con(bảng trung gian giũa job và skill)
+            // vd: job a: có kĩ năng 1,2,3 => khi xóa kĩ năng 1 bên bảng skill => thì xóa luôn kĩ năng 1 lưu bên bảng job_skill
+            // => job a chỉ còn kĩ năng 2,3
+            skill.getJobs().forEach(job -> job.getSkills().remove(skill));
             skillRepository.delete(skill);
         }
     }

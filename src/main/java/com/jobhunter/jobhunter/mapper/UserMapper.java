@@ -1,11 +1,11 @@
-package com.jobhunter.jobhunter.utils;
+package com.jobhunter.jobhunter.mapper;
 
 import com.jobhunter.jobhunter.dto.response.CompanyDTO;
 import com.jobhunter.jobhunter.dto.response.LoginDTOResponse;
 import com.jobhunter.jobhunter.dto.request.UserDTOCreate;
 import com.jobhunter.jobhunter.dto.response.UserDTOResponse;
-import com.jobhunter.jobhunter.entity.Company;
 import com.jobhunter.jobhunter.entity.User;
+import com.jobhunter.jobhunter.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
