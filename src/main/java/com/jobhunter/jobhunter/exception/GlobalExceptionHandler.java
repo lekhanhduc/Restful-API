@@ -30,8 +30,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<RestResponse<Object>> handleAuthenticationExceptions(Exception ex) {
         RestResponse<Object> res = new RestResponse<>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
-        res.setMessage(ex.getMessage());
-        res.setError("Exception occurs...");
+        res.setError(ex.getMessage());
+        res.setMessage("Exception occurs...");
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
@@ -149,5 +149,18 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(value = {
+            StogareException.class
+    })
+    public ResponseEntity<RestResponse<Object>> handleFileUploadException(Exception ex) {
+        RestResponse<Object> res = new RestResponse<>();
+        res.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        res.setError(ex.getMessage());
+        res.setMessage("Exception upload file...");
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
 }

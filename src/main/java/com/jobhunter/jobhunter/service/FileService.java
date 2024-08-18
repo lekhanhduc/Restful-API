@@ -49,12 +49,16 @@ public class FileService {
      * @param file
      * @param folder
      */
-    public void store(MultipartFile file, String folder) throws URISyntaxException, IOException {
+    public String store(MultipartFile file, String folder) throws URISyntaxException, IOException {
         String finalName = System.currentTimeMillis() + "-" + file.getOriginalFilename(); // tạo 1 chuỗi kí tự đặc biệt tránh trường hợp trùng file
         URI uri = new URI(baseURI + folder + "/" +finalName); // đường dẫn lưu ảnh
         Path path = Paths.get(uri);
         try(InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
         }
+        return finalName;
     }
 }
+
+//file.getOriginalFilename : lấy ra đường dẫn file, tên file
+
