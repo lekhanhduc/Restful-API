@@ -6,17 +6,21 @@ import com.jobhunter.jobhunter.exception.StogareException;
 import com.jobhunter.jobhunter.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,14 +35,14 @@ public class FileController {
     private final FileService fileService;
 
     @PostMapping("/files")
-    public ResponseEntity<UploadFileDTO> uploadFile(@RequestParam(name = "file", required = false)MultipartFile file,
+    public ResponseEntity<UploadFileDTO> uploadFile(@RequestParam(name = "file", required = false) MultipartFile file,
                                                     @RequestParam(name = "folder") String folder)
             throws URISyntaxException, IOException, StogareException {
         // check validation, Empty ?
-        if(file == null || file.isEmpty()){
+        if (file == null || file.isEmpty()) {
             throw new StogareException("File is Empty, Please upload ");
         }
-       // file size (dung luong file) ? ==> đã config tại file properties
+        // file size (dung luong file) ? ==> đã config tại file properties
 
         // check định dạng file
 
@@ -58,11 +62,42 @@ public class FileController {
              throw new StogareException("File format not supported. Allowed formats: " + String.join(", ", allowedExtensions));
         * */
 
-            fileService.createDirectory(baseURI + folder);
-            String uploadFile = fileService.store(file, folder);
+        fileService.createDirectory(baseURI + folder);
+        String uploadFile = fileService.store(file, folder);
 
-            UploadFileDTO response = new UploadFileDTO(uploadFile, Instant.now());
+        UploadFileDTO response = new UploadFileDTO(uploadFile, Instant.now());
 
         return ResponseEntity.ok().body(response);
     }
+
+    @GetMapping("/files")
+    public ResponseEntity<Resource> downloadFile(@RequestParam("folder") String folder,
+                                                 @RequestParam("fileName") String fileName)
+            throws StogareException, URISyntaxException, FileNotFoundException {
+
+        // Kiểm tra nếu fileName hoặc folder là null
+        if (fileName == null || folder == null) {
+            throw new StogareException("File or Folder is Empty");
+        }
+
+        // Xây dựng đường dẫn file
+        String baseDir = baseURI.replace("file:///", "");
+        Path filePath = Paths.get(baseDir, folder, fileName);
+
+        // Kiểm tra file có tồn tại hay không
+        File file = filePath.toFile();
+        if (!file.exists()) {
+            throw new StogareException("File with name = " + fileName + " not found");
+        }
+
+        // Lấy resource của file từ service
+        InputStreamResource resource = fileService.getResource(fileName, folder);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .contentLength(file.length())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
+
 }
